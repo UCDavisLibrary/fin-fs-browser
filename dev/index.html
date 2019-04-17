@@ -1,0 +1,14 @@
+<html>
+  <head>
+    <script src="bundle.js"></script>
+  </head>
+  <body>
+    <fin-fs-browser host="http://localhost:3000" collection="example_1-pets"></fin-fs-browser>
+  
+    <script>
+      setTimeout(() => {
+        document.querySelector('fin-fs-browser').setPath('/');
+      }, 500);
+    </script>
+  </body>
+</html>
