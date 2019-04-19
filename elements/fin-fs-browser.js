@@ -2,6 +2,7 @@ import { LitElement } from 'lit-element';
 import render from "./fin-fs-browser.tpl.js"
 
 import "./ffsb-table-row"
+import "./virtual-list/ffsb-virtual-list"
 
 export default class FinFsBrowser extends Mixin(LitElement)
   .with(LitCorkUtils) {
@@ -27,6 +28,12 @@ export default class FinFsBrowser extends Mixin(LitElement)
     this.root = '/';
     this.collection = '';
     this.host = '';
+    this.children = [];
+    this.isRoot = true;
+  }
+
+  connectedCallback() {
+    super.connectedCallback();
   }
 
   update(props) {
@@ -47,9 +54,14 @@ export default class FinFsBrowser extends Mixin(LitElement)
     let data = await this.FinFsBrowserModel.getPath(path);
     this.loading = false;
 
+
     this.children = this.FinFsBrowserModel
       .getGraphProperty(data.payload, this.FinFsBrowserModel.PROPERTIES.CONTAINS)
       .map(id => id.replace(this.FinFsBrowserModel.service.basePath, ''));
+
+    // setTimeout(() => {
+    //   this.shadowRoot.querySelector('iron-list')._render();
+    // }, 500);
   }
 
   async _onBackClicked() {
@@ -62,7 +74,7 @@ export default class FinFsBrowser extends Mixin(LitElement)
   }
 
   async _onChildClicked(e) {
-    let path = e.currentTarget.path;
+    let path = e.target.path;
     let data = await this.FinFsBrowserModel.getPath(path);
 
     let graph = data.payload;

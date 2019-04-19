@@ -30,7 +30,7 @@ export default class FfsbNameLabel extends Mixin(LitElement)
 
   async _onPathUpdate() {
     this.name = '...';
-    let data = await this.FinFsBrowserModel.getPath(this.path);
+    let data = await this.FinFsBrowserModel.getMinimalPath(this.path);
     if( data.state === 'error' ) {
       return this.name = 'ERROR';
     }

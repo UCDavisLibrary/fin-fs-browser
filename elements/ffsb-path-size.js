@@ -31,7 +31,7 @@ export default class FfsbPathSize extends Mixin(LitElement)
 
   async _onPathUpdate() {
     this.size = '';
-    let data = await this.FinFsBrowserModel.getPath(this.path);
+    let data = await this.FinFsBrowserModel.getMinimalPath(this.path);
     if( data.state === 'error' )  return;
 
     if( this.FinFsBrowserModel.isBinary(data.payload) ) {

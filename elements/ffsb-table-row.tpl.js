@@ -6,6 +6,7 @@ return html`
 <style>
   :host {
     display: block;
+    height: 50px;
   }
   .layout {
     display: flex;

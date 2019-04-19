@@ -32,7 +32,7 @@ export default class FfsbPathIcon extends Mixin(LitElement)
 
   async _onPathUpdate() {
     this.icon = 'radio-button-unchecked';
-    let data = await this.FinFsBrowserModel.getPath(this.path);
+    let data = await this.FinFsBrowserModel.getMinimalPath(this.path);
     if( data.state === 'error' ) {
       return this.icon = 'error';
     }

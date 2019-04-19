@@ -19,6 +19,10 @@ return html`
     margin: 10px;
     cursor: pointer;
   }
+
+  ffsb-virtual-list {
+    border: 1px solid red;
+  }
 </style>  
 
 <h2>
@@ -30,5 +34,8 @@ return html`
     html`<ffsb-table-row @click="${this._onChildClicked}" path="${child}"></ffsb-table-row>`
   )}
 </div>
+
+
+<ffsb-virtual-list></ffsb-virtual-list>
 
 `;}
