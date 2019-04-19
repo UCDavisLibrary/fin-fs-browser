@@ -16,6 +16,7 @@ export default class FfsbTableRow extends LitElement {
   constructor() {
     super();
     this.render = render.bind(this);
+    this.path = '';
   }
 
 }

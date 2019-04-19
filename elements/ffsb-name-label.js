@@ -17,6 +17,7 @@ export default class FfsbNameLabel extends Mixin(LitElement)
     this.render = render.bind(this);
 
     this.name = '...';
+    this.path = '';
 
     this._injectModel('FinFsBrowserModel');
   }
@@ -29,6 +30,8 @@ export default class FfsbNameLabel extends Mixin(LitElement)
   }
 
   async _onPathUpdate() {
+    if( !this.path ) return;
+
     this.name = '...';
     let data = await this.FinFsBrowserModel.getMinimalPath(this.path);
     if( data.state === 'error' ) {

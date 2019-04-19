@@ -20,6 +20,7 @@ export default class FfsbPathSize extends Mixin(LitElement)
     this._injectModel('FinFsBrowserModel');
 
     this.size = '';
+    this.path = '';
   }
 
   update(props) {
@@ -30,6 +31,8 @@ export default class FfsbPathSize extends Mixin(LitElement)
   }
 
   async _onPathUpdate() {
+    if( !this.path ) return;
+    
     this.size = '';
     let data = await this.FinFsBrowserModel.getMinimalPath(this.path);
     if( data.state === 'error' )  return;

@@ -21,6 +21,7 @@ export default class FfsbPathIcon extends Mixin(LitElement)
     this._injectModel('FinFsBrowserModel');
 
     this.icon = 'radio-button-unchecked';
+    this.path = '';
   }
 
   update(props) {
@@ -31,6 +32,8 @@ export default class FfsbPathIcon extends Mixin(LitElement)
   }
 
   async _onPathUpdate() {
+    if( !this.path ) return;
+
     this.icon = 'radio-button-unchecked';
     let data = await this.FinFsBrowserModel.getMinimalPath(this.path);
     if( data.state === 'error' ) {

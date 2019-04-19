@@ -6,7 +6,7 @@ return html`
 <style>
   :host {
     display: block;
-    height: 200px;
+    height: 100px;
   }
 
   .root {

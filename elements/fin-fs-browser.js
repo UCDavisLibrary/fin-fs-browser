@@ -22,6 +22,7 @@ export default class FinFsBrowser extends Mixin(LitElement)
   constructor() {
     super();
     this.render = render.bind(this);
+    this.createListElement = this.createListElement.bind(this);
 
     this._injectModel('FinFsBrowserModel');
 
@@ -58,10 +59,12 @@ export default class FinFsBrowser extends Mixin(LitElement)
     this.children = this.FinFsBrowserModel
       .getGraphProperty(data.payload, this.FinFsBrowserModel.PROPERTIES.CONTAINS)
       .map(id => id.replace(this.FinFsBrowserModel.service.basePath, ''));
+  }
 
-    // setTimeout(() => {
-    //   this.shadowRoot.querySelector('iron-list')._render();
-    // }, 500);
+  createListElement() {
+    let ele = document.createElement('ffsb-table-row');
+    ele.addEventListener('click', e => this._onChildClicked(e));
+    return ele;
   }
 
   async _onBackClicked() {

@@ -17,20 +17,12 @@ export default class FfsbVirtualList extends LitElement {
     super();
     this.render = render.bind(this);
 
-    let tmp = [];
-    for( let i = 0; i < 100; i++ ) {
-      tmp.push(i);
-    }
-
-    this.items = tmp;
-
-
+    this.items = [];
     this.assignItemProp = 'innerHTML';
     this.itemHeight = 50;
     this.renderedItems = [];
     this.trash = [];
   }
-
 
   update(props) {
     super.update(props);
@@ -41,7 +33,8 @@ export default class FfsbVirtualList extends LitElement {
     this.root = this.shadowRoot.querySelector('.root');
 
     this.height = this.offsetHeight;
-    let numEle = Math.ceil(this.height / this.itemHeight);
+    let numEle = Math.min(this.items.length, Math.ceil(this.height / this.itemHeight));
+
     for( let i = 0; i < numEle; i++ ) {
       let ele = this._createElement();
       ele[this.assignItemProp] = this.items[i];
@@ -66,8 +59,11 @@ export default class FfsbVirtualList extends LitElement {
     return ele;
   }
 
-  updated() {
+  updated(prop) {
     this.scrollPanel.style.height = this.items.length*this.itemHeight;
+    if( )
+
+    this._layoutItems();
   }
 
   _onScroll(e) {
@@ -77,11 +73,11 @@ export default class FfsbVirtualList extends LitElement {
   _layoutItems() {
     let scrollTop = this.root.scrollTop;
     let topEle = Math.floor(scrollTop / this.itemHeight);
-    let numEle = Math.ceil(this.height / this.itemHeight);
+    let numEle = Math.min(this.items.length, Math.ceil(this.height / this.itemHeight));
 
-    for( let i = 0; i < this.renderedItems.length; i++ ) {
+    for( let i = this.renderedItems.length-1; i >= 0; i-- ) {
       let item = this.renderedItems[i];
-      if( item.index < topEle || item.index > topEle+numEle ) {
+      if( item.index < topEle || item.index >= topEle+numEle ) {
         this.renderedItems.splice(i, 1);
         this.trash.push(item);
         this.scrollPanel.removeChild(item.ele);
@@ -101,11 +97,11 @@ export default class FfsbVirtualList extends LitElement {
       }
 
       item.index = i;
-      item.ele[this.assignItemProp] = this.items[i];
       this.renderedItems.push(item);
     }
 
     for( let item of this.renderedItems ) {
+      item.ele.setAttribute(this.assignItemProp, this.items[item.index]);
       item.ele.style.top = item.index*this.itemHeight;
     }
   }
