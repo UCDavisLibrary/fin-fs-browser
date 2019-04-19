@@ -34,14 +34,32 @@ export default class FfsbPathSize extends Mixin(LitElement)
     if( !this.path ) return;
     
     this.size = '';
-    let data = await this.FinFsBrowserModel.getMinimalPath(this.path);
-    if( data.state === 'error' )  return;
 
-    if( this.FinFsBrowserModel.isBinary(data.payload) ) {
-      let size = this.FinFsBrowserModel
-      .getGraphProperty(data.payload, this.FinFsBrowserModel.PROPERTIES.HAS_SIZE, true);
-      this.size = prettyBytes(parseInt(size));
-    }
+    // see if it's already loaded.  if so, set
+    let state = this.FinFsBrowserModel.store.getMinimalPath(this.path);
+    if( state && state.state === 'loaded' ) {
+      if( this.FinFsBrowserModel.isBinary(state.payload) ) {
+        let size = this.FinFsBrowserModel
+        .getGraphProperty(state.payload, this.FinFsBrowserModel.PROPERTIES.HAS_SIZE, true);
+        this.size = prettyBytes(parseInt(size));
+      }
+      return;
+    } 
+
+    if( this.updateTimer ) clearTimeout(this.updateTimer);
+    this.updateTimer = setTimeout(async () => {
+      this.updateTimer = null;
+      
+      let data = await this.FinFsBrowserModel.getMinimalPath(this.path);
+      if( data.id !== this.path ) return;
+      if( data.state !== 'loaded' ) return;
+
+      if( this.FinFsBrowserModel.isBinary(data.payload) ) {
+        let size = this.FinFsBrowserModel
+        .getGraphProperty(data.payload, this.FinFsBrowserModel.PROPERTIES.HAS_SIZE, true);
+        this.size = prettyBytes(parseInt(size));
+      }
+    }, 100);    
   }
 
 }

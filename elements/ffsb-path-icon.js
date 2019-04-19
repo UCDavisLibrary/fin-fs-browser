@@ -35,16 +35,34 @@ export default class FfsbPathIcon extends Mixin(LitElement)
     if( !this.path ) return;
 
     this.icon = 'radio-button-unchecked';
-    let data = await this.FinFsBrowserModel.getMinimalPath(this.path);
-    if( data.state === 'error' ) {
-      return this.icon = 'error';
-    }
 
-    if( this.FinFsBrowserModel.isBinary(data.payload) ) {
-      this.icon = 'editor:insert-drive-file';
-    } else {
-      this.icon = 'folder';
-    }
+    // see if it's already loaded.  if so, set
+    let state = this.FinFsBrowserModel.store.getMinimalPath(this.path);
+    if( state && state.state === 'loaded' ) {
+      if( this.FinFsBrowserModel.isBinary(state.payload) ) {
+        this.icon = 'editor:insert-drive-file';
+      } else {
+        this.icon = 'folder';
+      }
+      return;
+    } 
+
+    if( this.updateTimer ) clearTimeout(this.updateTimer);
+    this.updateTimer = setTimeout(async () => {
+      this.updateTimer = null;
+      let data = await this.FinFsBrowserModel.getMinimalPath(this.path);
+      if( data.id !== this.path ) return;
+      if( data.state === 'error' ) {
+        return this.icon = 'error';
+      }
+      if( data.state !== 'loaded' ) return;
+
+      if( this.FinFsBrowserModel.isBinary(data.payload) ) {
+        this.icon = 'editor:insert-drive-file';
+      } else {
+        this.icon = 'folder';
+      }
+    }, 100);    
   }
 
 }

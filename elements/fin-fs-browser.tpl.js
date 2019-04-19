@@ -21,7 +21,7 @@ return html`
   }
 
   ffsb-virtual-list {
-    border: 1px solid red;
+    border: 1px solid #ccc;
   }
 </style>  
 

@@ -6,7 +6,7 @@ return html`
 <style>
   :host {
     display: block;
-    height: 100px;
+    height: 300px;
   }
 
   .root {
@@ -20,15 +20,12 @@ return html`
   }
 
   .virtual-item {
-    border: 1px solid red;
     position: absolute;
     width: 100%;
   }
 </style>  
 
 <div class="root" @scroll="${this._onScroll}">
-  <div id="scroll-panel">
-
-  </div>
+  <div id="scroll-panel"></div>
 </div>
 `;}

@@ -19,7 +19,7 @@ export default class FfsbVirtualList extends LitElement {
 
     this.items = [];
     this.assignItemProp = 'innerHTML';
-    this.itemHeight = 50;
+    this.itemHeight = 25;
     this.renderedItems = [];
     this.trash = [];
   }
@@ -61,8 +61,6 @@ export default class FfsbVirtualList extends LitElement {
 
   updated(prop) {
     this.scrollPanel.style.height = this.items.length*this.itemHeight;
-    if( )
-
     this._layoutItems();
   }
 

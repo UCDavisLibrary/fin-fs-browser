@@ -6,7 +6,11 @@ return html`
 <style>
   :host {
     display: block;
-    height: 50px;
+    height: 25px;
+    cursor: pointer;
+  }
+  :host(:hover) {
+    background-color: #f8f8f8;
   }
   .layout {
     display: flex;

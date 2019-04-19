@@ -33,11 +33,26 @@ export default class FfsbNameLabel extends Mixin(LitElement)
     if( !this.path ) return;
 
     this.name = '...';
-    let data = await this.FinFsBrowserModel.getMinimalPath(this.path);
-    if( data.state === 'error' ) {
-      return this.name = 'ERROR';
-    }
-    this.name = this.FinFsBrowserModel.getGraphName(data.payload);
+
+    // see if it's already loaded.  if so, set
+    let state = this.FinFsBrowserModel.store.getMinimalPath(this.path);
+    if( state && state.state === 'loaded' ) {
+      this.name = this.FinFsBrowserModel.getGraphName(state.payload);
+      return;
+    } 
+
+    if( this.updateTimer ) clearTimeout(this.updateTimer);
+    this.updateTimer = setTimeout(async () => {
+      this.updateTimer = null;
+
+      let data = await this.FinFsBrowserModel.getMinimalPath(this.path);
+      if( data.id !== this.path ) return;
+      if( data.state === 'error' ) {
+        return this.name = 'ERROR';
+      }
+      if( data.state !== 'loaded' ) return;
+      this.name = this.FinFsBrowserModel.getGraphName(data.payload);
+    }, 100);
   }
 
 }
