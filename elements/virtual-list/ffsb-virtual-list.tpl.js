@@ -23,9 +23,13 @@ return html`
     position: absolute;
     width: 100%;
   }
+
+  [hidden] {
+    display: none;
+  }
 </style>  
 
 <div class="root" @scroll="${this._onScroll}">
-  <div id="scroll-panel"></div>
+  <div id="scroll-panel" ?hidden="${this.loading}"></div>
 </div>
 `;}

@@ -31,6 +31,7 @@ export default class FinFsBrowser extends Mixin(LitElement)
     this.host = '';
     this.children = [];
     this.isRoot = true;
+    this.loading = false;
   }
 
   connectedCallback() {
@@ -78,7 +79,10 @@ export default class FinFsBrowser extends Mixin(LitElement)
 
   async _onChildClicked(e) {
     let path = e.target.path;
+
+    this.loading = true;
     let data = await this.FinFsBrowserModel.getPath(path);
+    this.loading = false;
 
     let graph = data.payload;
     if( this.FinFsBrowserModel.isBinary(graph) ) {

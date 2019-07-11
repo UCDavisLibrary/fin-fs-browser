@@ -32,6 +32,7 @@ return html`
 
 
 <ffsb-virtual-list 
+  .loading="${this.loading}"
   .items="${this.children}" 
   assignItemProp="path"
   .createItemElement="${this.createListElement}">

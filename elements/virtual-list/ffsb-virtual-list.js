@@ -9,7 +9,8 @@ export default class FfsbVirtualList extends LitElement {
       items : {type: Array},
       renderedItems : {type: Array},
       assignItemProp : {type: String},
-      itemHeight : {type : Number}
+      itemHeight : {type : Number},
+      loading : {type: Boolean}
     }
   }
 
@@ -22,6 +23,7 @@ export default class FfsbVirtualList extends LitElement {
     this.itemHeight = 25;
     this.renderedItems = [];
     this.trash = [];
+    this.loading = false;
   }
 
   update(props) {
